@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Reception Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    html, body {
+      background-color: #F5F5F5;
+      color: #002D72;
+      font-family: "Segoe UI", "Helvetica Neue", sans-serif;
+      padding: 0 20px;
+    }
+  
+    .Labels {
+      font-size: 0.9em;
+      margin-left: 10px;
+      color: #5BC0EB;
+      text-decoration: none;
+      font-weight: 500;
+    }
+  
+    .Labels:hover {
+      color: #40B4E5;
+      text-decoration: underline;
+    }
+  
+    .Title {
+      color: #002D72;
+      text-align: center;
+      font-size: 2rem;
+      margin: 30px 0 20px;
+      font-weight: 600;
+    }
+  
+    .section-title {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 20px 0 10px;
+    }
+  
+    .section-title h2 {
+      font-size: 1.25rem;
+      color: #002D72;
+      margin: 0;
+      font-weight: 600;
+    }
+  
+    .table-responsive {
+      border: 1px solid #D0D0D0;
+      border-radius: 10px;
+      background-color: #ffffff;
+      box-shadow: 0 0 8px rgba(0,0,0,0.05);
+      margin-bottom: 30px;
+    }
+  
+    .table thead th {
+      background-color: #002D72;
+      color: white;
+      border: none;
+      font-size: 0.9rem;
+    }
+  
+    .table td {
+      color: #002D72;
+      font-size: 0.88rem;
+    }
+  
+    .table-striped tbody tr:nth-of-type(odd) {
+      background-color: #F8FAFC;
+    }
+  
+    .btn-primary {
+      background-color: #002D72;
+      border: none;
+    }
+  
+    .btn-success {
+      background-color: #5BC0EB;
+      color: #002D72;
+      font-weight: 500;
+      border: none;
+    }
+  
+    .btn-success:hover {
+      background-color: #40B4E5;
+      color: #001E50;
+    }
+  
+    footer {
+      margin: 40px 0 20px;
+      font-size: 0.9rem;
+    }
+  
+    footer a {
+      color: #5BC0EB;
+      text-decoration: none;
+    }
+  
+    footer a:hover {
+      text-decoration: underline;
+    }
+  
+    @media (max-width: 576px) {
+      .section-title h2 {
+        font-size: 1rem;
+      }
+  
+      .Labels {
+        font-size: 0.75rem;
+      }
+  
+      .table th, .table td {
+        font-size: 0.78rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+    <div class="container-fluid px-3 py-4">
+      <h1 class="Title text-center fs-2">Reception Dashboard</h1>
+  
+      <!-- All Devices -->
+      <section class="mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+          <h2 class="fs-5 mb-2 mb-md-0">All Devices</h2>
+          <div>
+            <a href="{{ url_for('all_devices') }}" class="Labels">View All</a>
+          </div>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-sm table-striped">
+            <thead>
+              <tr class="Labels">
+                <th>Phone ID</th>
+                <th>Phone</th>
+                <th>Abo Number</th>
+                <th>Battery Life</th>
+                <th>Comments</th>
+                <th>Abo</th>
+                <th>Location</th>
+                <th>Status</th>
+                <th>Data EU/West EU</th>
+                <th>World 1</th>
+                <th>World 2</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for device in devices[:3] %}
+              <tr>
+                <td>{{ device.device_id }}</td>
+                <td>{{ device.Phone }}</td>
+                <td>{{ device.abo_number }}</td>
+                <td>{{ device.battery_life }}</td>
+                <td>{{ device.comment or 'n/a' }}</td>
+                <td>{{ device.abo_type }}</td>
+                <td>{{ device.location }}</td>
+                <td>{{ device.status }}</td>
+                <td>{{ device.DataEU_westEU }}</td>
+                <td>{{ device.World1 }}</td>
+                <td>{{ device.World2 }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+  
+      <!-- Recent activity + check in/ check out link -->
+      <section class="mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+          <h2 class="fs-5 mb-2 mb-md-0">Check-in/Check-out</h2>
+          <a href="{{ url_for('check_in_out') }}" class="Labels">Check in/check out a Device</a>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-sm table-striped">
+            <thead>
+              <tr class="Labels">
+                <th>User ID</th>
+                <th>Device ID</th>
+                <th>Action</th>
+                <th>Time</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for log in usage_history[:4] %}
+              <tr>
+                <td>{{ log.user_id }}</td>
+                <td>{{ log.device_id }}</td>
+                <td>{{ log.action }}</td>
+                <td>{{ log.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section
+  
+      <!--  Users table-->
+
+      <section class="mb-4">
+        <div class="d-flex justify-content-between align-items-center mb-2 flex-wrap">
+          <h2 class="fs-5 mb-2 mb-md-0">Users</h2>
+          <a href="{{ url_for('all_users') }}" class="Labels">View All</a>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-sm table-striped">
+            <thead>
+              <tr class="Labels">
+                <th>ID</th>
+                <th>Username</th>
+                <th>Name</th>
+                <th>Email</th>
+              </tr>
+            </thead>
+            <tbody>
+              {% for user in users[:4] %}
+              <tr>
+                <td>{{ user.user_id }}</td>
+                <td>{{ user.username }}</td>
+                <td>{{ user.name }}</td>
+                <td>{{ user.email }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      </section>
+  
+      <footer class="text-center">
+        <p><a href="{{ url_for('logout') }}">Log out</a></p>
+      </footer>
+    </div>
+  
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

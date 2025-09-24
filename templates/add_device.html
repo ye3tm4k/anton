@@ -1,0 +1,38 @@
+<h2>Add New Device</h2>
+<form action="{{ url_for('add_device') }}" method="POST">
+    <label for="phone">Phone Model:</label><br>
+    <input type="text" id="phone" name="phone" required><br><br>
+
+    <label for="abo_number">Abo Number:</label><br>
+    <input type="text" id="abo_number" name="abo_number" required><br><br>
+
+    <label for="battery_life">Battery Life (%):</label><br>
+    <input type="number" id="battery_life" name="battery_life" min="0" max="100" required><br><br>
+
+    <label for="comment">Comments:</label><br>
+    <textarea id="comment" name="comment" rows="3" cols="30"></textarea><br><br>
+
+    <label for="abo_type">Abo Type:</label><br>
+    <input type="text" id="abo_type" name="abo_type" required><br><br>
+
+    <label for="location">Location:</label><br>
+    <input type="text" id="location" name="location" required><br><br>
+
+    <label for="status">Status:</label><br>
+    <select id="status" name="status" required>
+        <option value="Available">Available</option>
+        <option value="checked-out">Assigned</option>
+        <option value="pending">Maintenance</option>
+    </select><br><br>
+
+    <label for="data_eu">Data EU / West EU (Gb):</label><br>
+    <input type="number" id="data_eu" name="data_eu"><br><br>
+
+    <label for="world1">World 1 (Gb):</label><br>
+    <input type="number" id="world1" name="world1"><br><br>
+
+    <label for="world2">World 2 (Gb):</label><br>
+    <input type="number" id="world2" name="world2"><br><br>
+
+    <button type="submit">Add Device</button>
+</form>

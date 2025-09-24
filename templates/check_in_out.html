@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>All Activity</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <style>
+    body {
+      background-color: #ffffff;
+      color: #8A0000;
+    }
+
+    h1 {
+      color: #8A0000;
+      font-weight: 600;
+    }
+
+    .table th, .table td {
+      vertical-align: middle;
+    }
+
+    .form-select-sm {
+      min-width: 140px;
+    }
+
+    .btn-success {
+      white-space: nowrap;
+    }
+
+    .text-muted {
+      font-size: 0.9em;
+    }
+
+    @media (max-width: 576px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .btn, .form-select-sm {
+        font-size: 0.8rem;
+      }
+
+      .form-select-sm {
+        width: 100%;
+      }
+
+      .d-flex {
+        flex-direction: column !important;
+        align-items: stretch !important;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container py-4">
+    <h1 class="mb-4 text-center">check in/check out</h1>
+    <div class="text-end mb-3">
+      <a href="{{ url_for('back_to_dashboard') }}" class="btn btn-outline-secondary">← Back to Dashboard</a>
+    </div>
+
+    <div class="table-responsive">
+      <table class="table table-striped table-hover align-middle">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>Phone</th>
+            <th>ABO Number</th>
+            <th>Approved For: </th>
+            <th>Status</th>
+            <th>Location</th>
+            <th>Battery</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for device, user in devices %}
+          <tr>
+            <td>{{ device.device_id }}</td>
+            <td>{{ device.Phone }}</td>
+            <td>{{ device.abo_number }}</td>
+            <td>
+              {% if device.status == 'Available' %}
+                <span class="text-muted">n/a</span>
+              {% elif user %}
+                {{ user.name }}<br><small class="text-muted">{{ user.email }}</small>
+              {% else %}
+                <span class="text-muted">—</span>
+              {% endif %}
+            </td>
+            <td>{{ device.status }}</td>
+            <td>{{ device.location or 'n/a' }}</td>
+            <td>{{ device.battery_life }}%</td>
+            <td>
+              {% if device.status != 'Available' %}
+              <form action="{{ url_for('check_in', device_id=device.device_id) }}" method="POST" class="d-flex align-items-center gap-2 mb-1 flex-wrap">
+                <select name="location" class="form-select form-select-sm text-danger border-danger" required>
+                  <option value="" disabled selected>Select Campus</option>
+                  <option value="Aesch Campus">Aesch Campus</option>
+                  <option value="Reinach Campus">Reinach Campus</option>
+                  <option value="Fiechten Campus">Fiechten Campus</option>
+                </select>
+                <button type="submit" class="btn btn-sm btn-outline-success">Check In</button>
+              </form>
+              <form action="{{ url_for('check_out', device_id=device.device_id) }}" method="POST" class="d-inline">
+                <button type="submit" class="btn btn-sm btn-outline-primary">Check Out</button>
+              </form>
+              {% else %}
+              <span class="text-muted">Already Checked In</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

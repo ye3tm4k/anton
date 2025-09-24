@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>All Pending Requests</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f6f8;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+            background-color: #fafafa;
+        }
+
+        th, td {
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+            font-weight: 600;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        .actions a,
+        .actions form {
+            display: inline-block;
+            margin-right: 10px;
+        }
+
+        select, button {
+            padding: 6px 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            font-size: 14px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            cursor: pointer;
+            border: none;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .deny-button {
+            background-color: #dc3545;
+        }
+
+        .deny-button:hover {
+            background-color: #a71d2a;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>All Pending Requests</h1>
+        <p class="back-link"><a href="{{ url_for('admin_dashboard') }}">⬅ Back to Admin Dashboard</a></p>
+
+        {% if pending_requests %}
+            <h2>Pending Requests</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>User</th>
+                        <th>Zone</th>
+                        <th>Purpose</th>
+                        <th>Requested At</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for req in pending_requests %}
+                    <tr>
+                        <td>{{ req.user_id }}</td>
+                        <td>{{ req.abo_need }}</td>
+                        <td>{{ req.purpose }}</td>
+                        <td>{{ req.timestamp.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ req.status }}</td>
+                        <td class="actions">
+                            <a href="{{ url_for('auto_approve_request', request_id=req.request_id) }}">✅ Auto Approve</a>
+
+                            <form action="{{ url_for('approve_request') }}" method="POST" style="display:inline;">
+                                <input type="hidden" name="request_id" value="{{ req.request_id }}">
+                                <select name="device_id" required>
+                                    <option value="">Select Device</option>
+                                    {% for available_device in available_devices %}
+                                        <option value="{{ available_device.device_id }}">
+                                            {{ available_device.device_id }} - {{ available_device.Phone }} ({{ available_device.abo_number }})
+                                        </option>
+                                    {% endfor %}
+                                </select>
+                                <button type="submit">✔ Approve</button>
+                            </form>
+
+                            <form action="{{ url_for('deny_request', request_id=req.request_id) }}" method="get" style="display:inline;">
+                                <button type="submit" class="deny-button">❌ Deny</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <h2>Available Devices</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Phone</th>
+                        <th>Abo Number</th>
+                        <th>Plan Type</th>
+                        <th>Battery</th>
+                        <th>Comments</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Data EU/West EU</th>
+                        <th>World 1</th>
+                        <th>World 2</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for device in devices %}
+                    <tr>
+                        <td>{{ device.device_id }}</td>
+                        <td>{{ device.Phone }}</td>
+                        <td>{{ device.abo_number }}</td>
+                        <td>{{ device.abo_type }}</td>
+                        <td>{{ device.battery_life }}</td>
+                        <td>{{ device.comment or 'n/a' }}</td>
+                        <td>{{ device.location }}</td>
+                        <td>{{ device.status }}</td>
+                        <td>{{ device.DataEU_westEU }}</td>
+                        <td>{{ device.World1 }}</td>
+                        <td>{{ device.World2 }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p>No pending requests.</p>
+        {% endif %}
+    </div>
+</body>
+</html>

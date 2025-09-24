@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Welcome!</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+    <style>
+        html, body {
+            display: flex;
+            align-items: start;
+            gap: 20px;
+            background-color: #C4896E ;
+            color: #120B07;
+            padding: 0 20px;
+            max-width: fit-content;
+            max-height: fit-content;
+        }
+        .me{
+            padding: 30px;
+            max-width: 100%;
+            height: auto;
+            border-style: solid;
+        }
+        .wrapper {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px
+        }
+
+        .container { 
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                gap: 20px;
+        }
+
+        .right-section { 
+                font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+                gap: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            width: 100%;
+            background-color: #533222;
+            color: #DDBBAC;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome</h1>
+        <div class="wrapper">
+            <div class="container">
+                <h2>Project summary</h2>
+                <p>
+                    Welcome to my Computer Science Internal Assessment project. This web-based system has been designed to assist the IT department in efficiently tracking and managing the allocation of mobile phones across our school's three campuses. The platform enables administrators to view which devices are currently signed out, who is using them, and which users still require a phone. 
+                </p>
+                <p2>    
+                    By streamlining the approval process for phone requests and providing a centralized dashboard for monitoring device availability, this tool helps reduce administrative workload and ensures accountability. It also maintains a usage history, making it easy to track past check-ins, check-outs, approvals and denials. It also allows for people requesting phones to be notified more quickly as once approved it automaticaly sends and email. The goal of this project is to create a practical, user-friendly solution that addresses real-world challenges faced by the IT department, while demonstrating the application of database management, web development, and user interface design within a school environment.
+                </p2>
+                <br></br>
+                <a href="{{ url_for('login') }}">
+                    <button type="button">View CS IA</button>
+                </a>
+            </div>
+            <div class="right-section">
+                <h2>About me</h2>
+                <p>
+                    Hi, I’m Anton! I’m a student with a passion for technology, especially computer science and anything to do with coding and problem-solving. I love building things that are useful in the real world, like this project, which helps my school manage phone usage more efficiently.
+                </p>
+                <p2>
+                    Outside of tech, I’m really into triathlons and endurance sports — I train regularly and enjoy pushing my limits in swimming, cycling, and running. I’m also interested in photography, especially capturing moments during school events like cross-country meets. In my free time, you’ll probably find me working on side projects, learning more about AI and robotics, or riding my bike through the Swiss countryside. I enjoy a good challenge, whether it’s in programming, sport, or trying something new.
+                </p2>   
+                <br></br>
+                <img src="{{ url_for('static', filename='IMG_2982.jpg') }}" alt="Picture of me" class="me">
+                
+            </div>
+          </div>
+        
+        
+        
+    </div>
+    
+    
+</body>
+</html>
